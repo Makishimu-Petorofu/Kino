@@ -6,30 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.NewFragment">
 
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="?android:attr/progressBarStyle"
+    <ImageView
+        android:id="@+id/tvLastMoviePoster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvLastMovieName"
+        app:layout_constraintStart_toStartOf="@+id/tvLastMovieName"
+        app:layout_constraintTop_toBottomOf="@+id/tvLastMovieName"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvLastMovieName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/tvTextLastView"
+        app:layout_constraintStart_toStartOf="@+id/tvTextLastView"
+        app:layout_constraintTop_toBottomOf="@+id/tvTextLastView" />
+
+    <TextView
+        android:id="@+id/tvTextLastView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Последний просмотренный фильм"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleViewhor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycleViewhor" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

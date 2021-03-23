@@ -1,17 +1,27 @@
 package com.example.kinosearch;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kinosearch.auth.Api.serv.UserMovies;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,55 +31,68 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NewMovie extends Fragment {
-    Context context;
-    private ProgressBar mProgressBar;
-    RecyclerView mRecyclerView;
+    private NotificationsViewModel notificationsViewModel;
+    TextView movieName;
+    ImageView moviePoster;
 
-    List<Movies> mMovies = new ArrayList<Movies>();
+    int id;
+    private SharedPreferences mSettings;
 
-    public NewMovie() {
-        super(R.layout.fragment_new);
-    }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceStatem) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_new, container, false);
-        mProgressBar = view.findViewById(R.id.progressBar2);
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mMovies = new ArrayList<>();
-        mRecyclerView = view.findViewById(R.id.recycleView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        mRecyclerView.setLayoutManager(layoutManager);
-        MovieAdapter adapter = new MovieAdapter(mMovies);
-        mRecyclerView.setAdapter(adapter);
+    private final static String PHOTO_URL = "http://cinema.areas.su/up/images/";
 
-        mProgressBar.setVisibility(View.VISIBLE);
-
-        final Call<List<Movies>> call = UserMovies.ApiClient.getMovieNew().getDate();
-        call.enqueue(new Callback<List<Movies>>() {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        notificationsViewModel =
+                ViewModelProviders.of(this).get(NotificationsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_new, container, false);
+        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
-                if (response.isSuccessful()) {
-                    mMovies.addAll(response.body());
-                    mRecyclerView.getAdapter().notifyDataSetChanged();
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                } else {
+            public void onChanged(@Nullable String s) {
+            }
+        });
 
+        movieName = root.findViewById(R.id.tvLastMovieName);
+        moviePoster = root.findViewById(R.id.tvLastMoviePoster);
+        mSettings = getContext().getApplicationContext().getSharedPreferences("MoviePrefs", Context.MODE_PRIVATE);
+
+
+        id = mSettings.getInt("idMovie", 0);
+
+        Call<Movies> call = UserMovies.ApiClient.getService().getMovieDate(id);
+
+        call.enqueue(new Callback<Movies>() {
+            @Override
+            public void onResponse(Call<Movies> call, Response<Movies> response) {
+                if(response.isSuccessful()){
+                    Movies movie = response.body();
+                    movieName.setText(movie.getName());
+
+                    Picasso.with(getContext())
+                            .load(PHOTO_URL + movie.getPoster())
+                            .resize(500,700)
+                            .into(moviePoster);
+
+                }
+                else{
+                    Toast.makeText(getContext(), response.errorBody().toString(), Toast.LENGTH_LONG ).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Movies>> call, Throwable t) {
-                mProgressBar.setVisibility(View.INVISIBLE);
+            public void onFailure(Call<Movies> call, Throwable t) {
+
             }
         });
 
-        return view;
+        moviePoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), CardMovie.class).putExtra("movieId", id);
+                getContext().startActivity(intent);
+            }
+        });
+
+        return root;
 
     }
 }

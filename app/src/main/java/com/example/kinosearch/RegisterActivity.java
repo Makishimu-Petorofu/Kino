@@ -102,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerRequest.setFirstName(et_first_name.getText().toString());
         registerRequest.setLastName(et_last_name.getText().toString());
 
-        Call<RegisterResponse> call = UserMovies.ApiClient.getService().saveUser(registerRequest);
+        Call<RegisterResponse> call = UserMovies.ApiClient.getService().registerUser(registerRequest);
         call.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {

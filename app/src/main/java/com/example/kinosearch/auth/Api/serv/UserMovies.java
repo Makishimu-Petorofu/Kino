@@ -38,10 +38,7 @@ public interface UserMovies {
                     .build();
             return retrofit;
         }
-        public static RegisterService getService(){
-            RegisterService registerService = getRetrofit().create(RegisterService.class);
-            return  registerService;
-        }
+
         public static LoginService getLogin(){
             LoginService loginService = getRetrofit().create(LoginService.class);
 
@@ -71,6 +68,11 @@ public interface UserMovies {
         public static IdMovie getIdMovie(){
             IdMovie idMovie = getRetrofit().create(IdMovie.class);
             return  idMovie;
+        }
+        public static ApiService getService(){
+            ApiService apiService = getRetrofit().create(ApiService.class);
+
+            return  apiService;
         }
     }
 }

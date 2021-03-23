@@ -45,7 +45,7 @@ public class MoviesAdapterHor extends RecyclerView.Adapter<MoviesAdapterHor.View
         holder.posterImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (mContext, MovieActivity.class).putExtra("CardId",movie.getMovieId());
+                Intent intent = new Intent(v.getContext(), CardMovie.class).putExtra("movieId", movie.getMovieId());
                 mContext.startActivity(intent);
             }
         });
@@ -71,7 +71,7 @@ public class MoviesAdapterHor extends RecyclerView.Adapter<MoviesAdapterHor.View
             nameTextView = (TextView) itemView.findViewById(R.id.itemTextViewName);
             descriptionTextView = (TextView) itemView.findViewById(R.id.itemTextViewDesc);
             posterImageView = (ImageView) itemView.findViewById(R.id.ivTrendPosters);
-            tagTextView = (TextView) itemView.findViewById(R.id.itemTextViewAge);
+
 
         }
     }

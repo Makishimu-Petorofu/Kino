@@ -2,6 +2,7 @@ package com.example.kinosearch;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,10 +42,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
                 .load(PHOTO_URL + movies.getPoster())
                 .resize(500,700)
                 .into(holder.flowerImageView);
-        holder.textViewName.setText(movies.getName());
+        holder.textViewName.setText(movies.getName()+"  " + movies.getAge()+ "+");
         holder.textViewDesc.setText(movies.getDescription());
-        holder.textViewAge.setText(movies.getAge() + "+");
-        holder.textViewName.setOnClickListener(new View.OnClickListener() {
+
+        holder.flowerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CardMovie.class).putExtra("movieId", movies.getMovieId());
@@ -74,7 +75,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             flowerImageView = (ImageView) itemView.findViewById(R.id.itemImageView);
             textViewName = itemView.findViewById(R.id.itemTextViewName);
             textViewDesc = itemView.findViewById(R.id.itemTextViewDesc);
-            textViewAge = itemView.findViewById(R.id.itemTextViewAge);
+
 
         }
     }
